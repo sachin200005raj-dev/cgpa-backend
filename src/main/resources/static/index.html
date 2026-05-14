@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CGPA Calculator</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f2f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>CGPA Calculator</h2>
+
+    <input type="text" id="name" placeholder="Enter Name">
+
+    <input type="number" id="m1" placeholder="Subject 1 Marks">
+
+    <input type="number" id="m2" placeholder="Subject 2 Marks">
+
+    <input type="number" id="m3" placeholder="Subject 3 Marks">
+
+    <input type="number" id="m4" placeholder="Subject 4 Marks">
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function calculate() {
+
+    const data = {
+
+        name: document.getElementById("name").value,
+
+        m1: Number(document.getElementById("m1").value),
+
+        m2: Number(document.getElementById("m2").value),
+
+        m3: Number(document.getElementById("m3").value),
+
+        m4: Number(document.getElementById("m4").value)
+    };
+
+    fetch("/student/calculate", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(data)
+
+    })
+
+    .then(response => response.json())
+
+    .then(result => {
+
+        document.getElementById("result").innerHTML = `
+
+            <h3>Result</h3>
+
+            <p><b>Name:</b> ${result.name}</p>
+
+            <p><b>Percentage:</b> ${result.percentage.toFixed(2)}%</p>
+
+            <p><b>CGPA:</b> ${result.cgpa.toFixed(2)}</p>
+
+            <p><b>Grade:</b> ${result.grade}</p>
+
+        `;
+    });
+
+}
+
+</script>
+
+</body>
+</html>
